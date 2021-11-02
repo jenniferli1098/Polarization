@@ -3,6 +3,7 @@ class Candidate:
         self.id = id
         self.affiliation = affiliation
         self.p = p
+        self.utility = 0
 
     def stats(self):
         print("Candidate ID: ",self.id)

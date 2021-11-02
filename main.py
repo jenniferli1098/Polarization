@@ -19,6 +19,9 @@ def example_1():
 
     states = [0,1]
     model1.create_states(states)
-    model1.run_iter()
+    model1.set_state(0)
+    for _ in range(10):
+        model1.run_iter()
+    print(model1.history.sum_utility())
 
 __main__()

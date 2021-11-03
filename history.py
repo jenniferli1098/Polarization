@@ -1,5 +1,8 @@
 from util import utility
+import numpy as np
 import collections
+from matplotlib import pyplot as plt
+
 class Round:
     def __init__(self, winner, state, utility):
         self.winner = winner
@@ -20,19 +23,23 @@ class History:
         else:
             return None
 
-    def sum_utility(self):
-        utility = [round.utility for round in self.rounds]
-        return sum(utility)
     
-    def state_freq(self):
-        utility = [round.state for round in self.rounds]
-        frequency = collections.Counter(utility)
-        return dict(frequency)
-
-
+    # def state_freq(self):
+    #     states = [round.state for round in self.rounds]
+    #     return states
+        # frequency = collections.Counter(utility)
+        # return dict(frequency)
 
 
     def stats(self):
-        print("total utility:      ",self.sum_utility())
-        print("frequency @ states: ", self.state_freq())
+        
+        utility = [round.utility for round in self.rounds]
+        states = [round.state for round in self.rounds]
+        print("total utility:      ", sum(utility))
+        # print("frequency @ states: ", self.state_freq())
+        hist, bin_edges = np.histogram(states, density=True)
+        _ = plt.hist(hist, bins=bin_edges)  # arguments are passed to np.histogram
+        plt.title("Histogram with 'auto' bins")
+        plt.show()
+
 

@@ -14,7 +14,7 @@ class Voter:
         util = utility(self.candidate_affiliation, self.affiliation, self.real_utility, state)
         ranking = sorted(ids, key=lambda id: -1* util[id])
         #now we shuffle
-        if type == "mallows":
+        if self.type == "mallows":
             d = cdf_mallows(len(self.real_utility), random.uniform(0,1))
             ranking = shuffle_dissimilarity(ranking, d)
         return ranking

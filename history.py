@@ -1,4 +1,5 @@
 from util import utility
+import collections
 class Round:
     def __init__(self, winner, state, utility):
         self.winner = winner
@@ -22,4 +23,16 @@ class History:
     def sum_utility(self):
         utility = [round.utility for round in self.rounds]
         return sum(utility)
+    
+    def state_freq(self):
+        utility = [round.state for round in self.rounds]
+        frequency = collections.Counter(utility)
+        return dict(frequency)
+
+
+
+
+    def stats(self):
+        print("total utility:      ",self.sum_utility())
+        print("frequency @ states: ", self.state_freq())
 

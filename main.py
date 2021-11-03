@@ -17,11 +17,13 @@ def example_1():
     r_voters = [[1,0.1,0],[1,0.1,0],[1,0.1,0],[0,1,0.1],[0,1,0.1]]
     model1.create_voters(a_voters, r_voters, a_candidates)
 
-    states = [0,1]
+    states = [0,0.25,0.5,0.75,1]
     model1.create_states(states)
-    model1.set_state(0)
-    for _ in range(10):
+    model1.set_state(1)
+    model1.set_voting_rule("plurality")
+
+    for _ in range(1000):
         model1.run_iter()
-    print(model1.history.sum_utility())
+    model1.history.stats()
 
 __main__()

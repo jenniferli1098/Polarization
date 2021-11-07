@@ -1,4 +1,4 @@
-from util import utility, shuffle_dissimilarity, cdf_mallows
+from util import utility, sampleFromMallows
 import numpy as np
 import random
 class Voter:
@@ -15,8 +15,9 @@ class Voter:
         ranking = sorted(ids, key=lambda id: -1* util[id])
         #now we shuffle
         if self.type == "mallows":
-            d = cdf_mallows(len(self.real_utility), random.uniform(0,1))
-            ranking = shuffle_dissimilarity(ranking, d)
+            ranking = sampleFromMallows(ranking, 0.1)
+            # d = cdf_mallows(len(self.real_utility), random.uniform(0,1))
+            # ranking = shuffle_dissimilarity(ranking, d)
         return ranking
     
     def set_type(self, type):

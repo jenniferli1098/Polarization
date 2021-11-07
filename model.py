@@ -1,7 +1,7 @@
 from candidate import Candidate
 from history import History
 from voter import Voter
-import statistics
+from util import borda, plurality
 import random
 import numpy as np
 class Model:
@@ -13,7 +13,6 @@ class Model:
         self.states = []
         self.cur_state_ind = 0
         self.round = 0
-        self.history = History()
         self.voting_rule = "plurality"
         self.type = "deterministic"
 
@@ -29,6 +28,7 @@ class Model:
 
     def create_states(self, states):
         self.states = states
+        self.history = History(len(states))
 
     def set_state(self, state):
         vals = np.where(self.states == state)
@@ -43,12 +43,14 @@ class Model:
         self.voting_rule = vr
     
     def find_winner(self, cur_state):
-        rankings = [voter.determine_ranking(cur_state) for voter in self.voters]
+        profiles = [voter.determine_ranking(cur_state) for voter in self.voters]
         #for now, assume plurality
         if self.voting_rule == "plurality":
-            scores = [rank[0] for rank in rankings]
-            random.shuffle(scores)
-            return statistics.mode(scores)
+            return plurality(profiles, len(self.candidates), len(self.voters))
+        elif self.voting_rule == "borda":
+            return borda(profiles, len(self.candidates), len(self.voters))
+
+
     
     def run_simulation(self, num_rounds):
         for _ in range(num_rounds):

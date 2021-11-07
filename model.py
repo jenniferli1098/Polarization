@@ -53,6 +53,8 @@ class Model:
 
     
     def run_simulation(self, num_rounds):
+        #refresh
+        self.history = History(len(self.states))
         for _ in range(num_rounds):
             self.run_iter()
 

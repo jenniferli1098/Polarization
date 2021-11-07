@@ -14,7 +14,6 @@ def borda(profile,m,n):
             points[pos] += curr_points
             curr_points -=1
     key, _ = max(points.items(),key = lambda i : i[1])
-    print(key)
     return key
 
 def plurality(profile,m,n):

@@ -1,7 +1,7 @@
 from candidate import Candidate
 from history import History
 from voter import Voter
-from util import borda, plurality
+from util import borda, plurality, utility
 import random
 import numpy as np
 class Model:
@@ -21,10 +21,10 @@ class Model:
 
     def create_voters(self, a, r, a_c):
         self.voters = np.array([Voter(i,a[i], r[i], a_c) for i in range(len(a))])
-        R = np.array(r).T
+        # R = np.array(r).T
         # print(R)
-        for i in range(len(self.candidates)):
-            self.candidates[i].utility = np.sum(R[i])
+        # for i in range(len(self.candidates)):
+        #     self.candidates[i].utility = np.sum(R[i])
 
     def create_states(self, states):
         self.states = states
@@ -50,6 +50,11 @@ class Model:
         elif self.voting_rule == "borda":
             return borda(profiles, len(self.candidates), len(self.voters))
 
+    def actual_rewards(self, winner_id: int, state = None):
+        if state is None:
+            state = self.states[self.cur_state_ind]
+        winner_candidate = self.candidates[winner_id]
+        return sum([utility(winner_candidate.affiliation,voter.affiliation, voter.real_utility[winner_id], state) for voter in self.voters])
 
     
     def run_simulation(self, num_rounds):
@@ -67,7 +72,8 @@ class Model:
         
         #increment round and add to history
         # print(winner.id, state, winner.utility)
-        self.history.add_to_history(winner.id, state, winner.utility)
+        actual_reward = self.actual_rewards(winner_id)
+        self.history.add_to_history(winner.id, state, actual_reward)
 
         #determine next state
         p = winner.p
